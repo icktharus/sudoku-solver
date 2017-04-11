@@ -4,8 +4,16 @@ module Sudoku
   class BoardReader
     include Singleton
 
+    SUDOKU_CONSTRAINTS = [
+      Sudoku::Constraint::UniqueSubboardConstraint,
+      Sudoku::Constraint::UniqueRowConstraint,
+      Sudoku::Constraint::UniqueColumnConstraint
+    ]
+
     def read(filename)
-      return self.parse( File.read(filename) )
+      board = self.parse( File.read(filename) )
+      board.add_constraints(SUDOKU_CONSTRAINTS)
+      return board
     end
 
     def parse(string)
