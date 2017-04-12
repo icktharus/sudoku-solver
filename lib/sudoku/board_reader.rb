@@ -38,7 +38,11 @@ module Sudoku
         rows += 1
       end
 
-      return Sudoku::Board.new(rows, cols, board_matrix)
+      board = Sudoku::Board.new(rows, cols, board_matrix)
+      if ! board.constraints_valid?
+        raise Sudoku::BoardError, "input board already fail Sudoku constraints."
+      end
+      return board
     end
     
   end

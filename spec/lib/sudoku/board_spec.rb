@@ -21,12 +21,10 @@ describe(Sudoku::Board) do
     end
 
     it("should create new board from matrix") do
-      board_matrix = [
-        [ nil, 1, 2 ],
-        [ 3, 4, 5 ],
-        [ 6, 7, 8  ]
-      ]
-        
+      board_matrix = [ [ nil, 1, 2 ],
+                       [ 3, 4, 5 ],
+                       [ 6, 7, 8  ] ]
+
       board = Sudoku::Board.new(3, 3, board_matrix)
 
       first_position  = Sudoku::BoardPosition.at(0,0)
@@ -37,6 +35,62 @@ describe(Sudoku::Board) do
       expect(board.cell_at(second_position).value).to eq(1)
       expect(board.cell_at(second_position).class).to eq(Sudoku::FixedCell)
     end
+  end
 
+  context(:cell_at) do
+    it("should get correct cell") do
+      board_matrix = [ [ nil, 1, nil ],
+                       [ nil, nil, 5 ],
+                       [ nil, nil, 8  ] ]
+
+      board = Sudoku::Board.new(3, 3, board_matrix)
+      position = Sudoku::BoardPosition.at(1,2)
+      expect(board.cell_at(position).value).to eq(5)
+    end
+  end
+
+  context(:each_cell) do
+    it("should iterate over each cell") do
+      board_matrix = [ [ nil, 1, 2 ],
+                       [ 3, 4, 5 ],
+                       [ 6, 7, 8  ] ]
+
+      board = Sudoku::Board.new(3, 3, board_matrix)
+
+      index = 0
+      board.each_cell do |cell|
+        case index
+        when 0
+          expect(cell.class).to eq(Sudoku::Cell)
+          expect(cell.value).to be(nil)
+        else
+          expect(cell.class).to eq(Sudoku::FixedCell)
+          expect(cell.value).to eq(index)
+        end
+
+        index += 1
+      end
+    end
+  end
+
+  context(:add_constraints) do
+    it("should apply constraint to board") do
+      board_matrix = [ [ nil, 1, 2 ],
+                       [ 3, 4, 5 ],
+                       [ 6, 7, 8  ] ]
+      board = Sudoku::Board.new(3, 3, board_matrix)
+
+      constraint = class_double("TestConstraint")
+      expect(constraint).to receive(:apply_to).with(board).
+        and_return([ :honky, :tonk ])
+
+      board.add_constraints([ constraint ])
+      expect(board.constraints).to eq([:honky, :tonk])
+    end
+  end
+
+  context(:constraints_valid?) do
+    it("should check board against all constraints") do
+    end
   end
 end

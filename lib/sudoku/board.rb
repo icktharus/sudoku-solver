@@ -40,6 +40,19 @@ module Sudoku
       return self.cells_by_position[position]
     end
 
+    # Public: Iterates over each cell.
+    #
+    # block - code to iterate over each cell.
+    #
+    # Returns nothing.
+    def each_cell(&block)
+      self.cells_by_position.each_pair do |position, cell|
+        block.call(cell)
+      end
+
+      return
+    end
+
     # Public: Adds Sudoku::Constraint::Base subclasses to apply to
     # this Sudoku::Board
     #
@@ -54,18 +67,17 @@ module Sudoku
       return
     end
 
-    # Public: Iterates over each cell.
+    # Public: Checks the constraints on this board to see if this
+    # board is valid.
     #
-    # block - code to iterate over each cell.
-    #
-    # Returns nothing.
-    def each_cell(&block)
-      self.cells_by_position.each_pair do |position, cell|
-        block.call(cell)
+    # Returns boolean.
+    def constraints_valid?
+      self.constraints.each do |constraint|
+        if ! constraint.validate
+          return false
+        end
       end
-
-      return
+      return true
     end
-
   end
 end
