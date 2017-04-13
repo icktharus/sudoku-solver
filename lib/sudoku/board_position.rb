@@ -15,8 +15,8 @@ module Sudoku
         raise RuntimeError, "no block passed to #each_position"
       end
 
-      (0..width-1).each do |x_position|
-        (0..height-1).each do |y_position|
+      (0..height-1).each do |y_position|
+        (0..width-1).each do |x_position|
           position = self.at( x_position, y_position )
           block.call(position)
         end

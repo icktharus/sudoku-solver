@@ -1,7 +1,8 @@
 module Sudoku
   class FixedCell < Cell
 
-    def initialize(value)
+    def initialize(position, value)
+      super(position)
       self.value = value
     end
 

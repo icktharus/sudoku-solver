@@ -20,12 +20,12 @@ module Sudoku
       self.constraints       = []
 
       Sudoku::BoardPosition.each_position(width, height) do |position|
-        value = board_matrix[position.x][position.y] rescue nil
+        value = board_matrix[position.y][position.x] rescue nil
 
         cell = if value.nil?
-                 Sudoku::Cell.new
+                 Sudoku::Cell.new(position)
                else
-                 Sudoku::FixedCell.new(value)
+                 Sudoku::FixedCell.new(position, value)
                end
         self.cells_by_position[position] = cell
       end
@@ -73,11 +73,24 @@ module Sudoku
     # Returns boolean.
     def constraints_valid?
       self.constraints.each do |constraint|
-        if ! constraint.validate
-          return false
-        end
+        constraint.validate
       end
       return true
     end
+
+    def to_a
+      array = []
+      (0..self.rows-1).each do |x|
+        row = []
+        (0..self.cols-1).each do |y|
+          position = Sudoku::BoardPosition.at(x, y)
+          cell = self.cell_at(position)
+          row << cell.value
+        end
+        array << row
+      end
+      return array
+    end
+
   end
 end

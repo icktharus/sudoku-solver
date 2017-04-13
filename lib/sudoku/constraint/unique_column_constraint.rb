@@ -11,7 +11,7 @@ module Sudoku
       def self.apply_to(board)
         columns = []
         board.each_cell do |cell|
-          columns[ cell.position.x ] ||= {}
+          columns[ cell.position.x ] ||= []
           columns[ cell.position.x ] << cell
         end
 

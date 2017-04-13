@@ -2,6 +2,15 @@ module Sudoku
   class Cell
 	attr_accessor(:value, :position, :constraints)
 
+    # Public: Create a new Cell at this position.
+    #
+    # position - Sudoku::BoardPosition instance
+    #
+    # Returns new Sudoku::Cell
+    def initialize(position)
+      self.position = position
+    end
+
 	# Public: Adds a constraint that applies to this cell.
 	#
 	# constraint - instance of Sudoku::Constraint::Base subclass
@@ -27,6 +36,5 @@ module Sudoku
 
 	  return allowable_values
 	end
-
   end
 end

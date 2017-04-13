@@ -28,7 +28,7 @@ describe(Sudoku::Board) do
       board = Sudoku::Board.new(3, 3, board_matrix)
 
       first_position  = Sudoku::BoardPosition.at(0,0)
-      second_position = Sudoku::BoardPosition.at(0,1)
+      second_position = Sudoku::BoardPosition.at(1,0)
 
       expect(board.cell_at(first_position).value).to be(nil)
       expect(board.cell_at(first_position).class).to be(Sudoku::Cell)
@@ -44,7 +44,7 @@ describe(Sudoku::Board) do
                        [ nil, nil, 8  ] ]
 
       board = Sudoku::Board.new(3, 3, board_matrix)
-      position = Sudoku::BoardPosition.at(1,2)
+      position = Sudoku::BoardPosition.at(2, 1)
       expect(board.cell_at(position).value).to eq(5)
     end
   end

@@ -1,4 +1,5 @@
 require 'singleton'
+require 'csv'
 
 module Sudoku
   class BoardReader
@@ -13,17 +14,24 @@ module Sudoku
     def read(filename)
       board = self.parse( File.read(filename) )
       board.add_constraints(SUDOKU_CONSTRAINTS)
+      begin
+        board.constraints_valid?
+      rescue Sudoku::Constraint::ConstraintError => e
+        raise Sudoku::BoardError, "input board already fail Sudoku constraints: #{e.message}"
+      end
       return board
     end
 
     def parse(string)
-      rows = -1
+      rows = 0
       cols = -1
 
       board_matrix = []
-      string.split(/\r?\n/).each do |line|
-        elements = line.split(/\s*\-\s*/).map{|el| el == "-" ? nil : el}
 
+      CSV.parse(string) do |row|
+        elements = row.map{|el| el == "-" ? nil : el.to_i}
+
+        # Skip blank lines.
         next if elements.size == 0
 
         if cols == -1
@@ -39,9 +47,6 @@ module Sudoku
       end
 
       board = Sudoku::Board.new(rows, cols, board_matrix)
-      if ! board.constraints_valid?
-        raise Sudoku::BoardError, "input board already fail Sudoku constraints."
-      end
       return board
     end
     

@@ -1,6 +1,6 @@
 module Sudoku
   module Constraint
-    class UniqueSubboardConstraint < Sudoku::Constraint::Base
+    class UniqueSubboardConstraint < Sudoku::Constraint::UniqueConstraint
 
       def self.apply_to(board)
         sub_boards = {}
@@ -23,7 +23,7 @@ module Sudoku
         x_position = (cell.position.x.to_f / 3.0).floor
         y_position = (cell.position.y.to_f / 3.0).floor
 
-        sub_board_position = Sudoku::Position.at(x_position, y_position)
+        sub_board_position = Sudoku::BoardPosition.at(x_position, y_position)
         return sub_board_position
       end
 

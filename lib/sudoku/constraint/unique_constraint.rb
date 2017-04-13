@@ -4,12 +4,12 @@ module Sudoku
 
       # Public : Validates whether the values are unique.
       #
-      # Returns boolean.
+      # Returns true or raises ConstraintError.
       def validate
         seen_values = Set.new
         self.cells.each do |cell|
-          if seen_values.include?(cell.value)
-            return false
+          if ! cell.value.nil? && seen_values.include?(cell.value)
+            raise ConstraintError, "#{cell.value} seen twice"
           end
           seen_values << cell.value
         end
