@@ -8,10 +8,18 @@ module Sudoku
     end
     
     def write(filename)
-      CSV.open(filename, 'wb') do |csv|
+      csv = if filename == "-"
+              CSV($stdout)
+            else
+              CSV.open(filename, "wb")
+            end
+
+      begin
         @board.to_a.each do |row|
           csv << row.map{|cell| cell.nil? ? '-' : cell}
         end
+      ensure
+        csv.close
       end
     end
 

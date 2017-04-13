@@ -12,7 +12,13 @@ module Sudoku
     ]
 
     def read(filename)
-      board = self.parse( File.read(filename) )
+      input_string = if filename == "-"
+                       $stdin.read
+                     else
+                       File.read(filename)
+                     end
+
+      board = self.parse( input_string )
       board.add_constraints(SUDOKU_CONSTRAINTS)
       begin
         board.constraints_valid?

@@ -3,8 +3,8 @@
 require( File.dirname(__FILE__) + '/../boot.rb' )
 
 def main
-  input_file  = ARGV[0]
-  output_file = ARGV[1]
+  input_file  = ARGV.size > 0 ? ARGV[0] : "-"
+  output_file = ARGV.size > 1 ? ARGV[1] : "-"
 
   reader = Sudoku::BoardReader.instance
   board  = reader.read(input_file)
