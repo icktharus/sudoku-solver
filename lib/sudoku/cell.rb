@@ -8,7 +8,8 @@ module Sudoku
     #
     # Returns new Sudoku::Cell
     def initialize(position)
-      self.position = position
+      self.position    = position
+      self.constraints = []
     end
 
 	# Public: Adds a constraint that applies to this cell.
@@ -17,7 +18,6 @@ module Sudoku
 	#
 	# Returns nothing.
 	def add_constraint(constraint)
-	  self.constraints ||= []
 	  self.constraints << constraint
 	  return
 	end
