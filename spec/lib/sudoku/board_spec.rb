@@ -91,6 +91,36 @@ describe(Sudoku::Board) do
 
   context(:constraints_valid?) do
     it("should check board against all constraints") do
+      board_matrix = [ [ nil, 1, 2 ],
+                       [ 3, 4, 5 ],
+                       [ 6, 7, 8  ] ]
+      board = Sudoku::Board.new(3, 3, board_matrix)
+
+      constraint_class = class_double("TestConstraint")
+      constraints = [ double(:honky), double(:tonk) ]
+      expect(constraint_class).to receive(:apply_to).with(board).
+        and_return(constraints)
+
+      board.add_constraints([ constraint_class ])
+
+      constraints.each do |constraint|
+        expect(constraint).to receive(:validate)
+      end
+
+      board.constraints_valid?
+    end
+  end
+
+  context(:to_a) do
+    it("should produce correct output board") do
+      board_matrix = [ [ nil, 1, 2 ],
+                       [ 3, 4, 5 ],
+                       [ 6, 7, 8  ] ]
+      board = Sudoku::Board.new(3, 3, board_matrix)
+      expect(board.to_a).to eq(board_matrix)
+
+      board.first_cell.value = 9
+      expect(board.to_a).to eq([ [9, 1, 2], [3, 4, 5], [6, 7, 8] ])
     end
   end
 end
