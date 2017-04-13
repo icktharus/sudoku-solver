@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require( File.dirname(__FILE__) + '/../boot.rb' )
+
+def main
+  input_file  = ARGV[0]
+  output_file = ARGV[1]
+
+  reader = Sudoku::BoardReader.instance
+  board  = reader.read(input_file)
+  range  = (1..9)
+
+  solver = Sudoku::Solver.new(board, range)
+  solver.solve
+
+  writer = Sudoku::BoardWriter.new(board)
+  writer.write(output_file)
+end
+
+main()
+

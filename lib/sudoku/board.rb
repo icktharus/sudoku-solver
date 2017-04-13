@@ -1,6 +1,6 @@
 module Sudoku
   class Board
-    attr_accessor(:cells_by_position, :rows, :cols, :constraints)
+    attr_accessor(:cells_by_position, :rows, :cols, :constraints, :first_cell)
 
     DEFAULT_WIDTH  = 9
     DEFAULT_HEIGHT = 9
@@ -19,7 +19,11 @@ module Sudoku
       self.cells_by_position = {}
       self.constraints       = []
 
+      last_cell = nil
+
       Sudoku::BoardPosition.each_position(width, height) do |position|
+        # NOTE: I think in terms of (x, y), but arrays are structured
+        # ARRAY[row][column], which means reversing x and y:
         value = board_matrix[position.y][position.x] rescue nil
 
         cell = if value.nil?
@@ -28,6 +32,13 @@ module Sudoku
                  Sudoku::FixedCell.new(position, value)
                end
         self.cells_by_position[position] = cell
+        if last_cell.nil?
+          self.first_cell = cell
+        else
+          last_cell.next_cell = cell
+        end
+
+        last_cell = cell
       end
     end
 
@@ -78,11 +89,14 @@ module Sudoku
       return true
     end
 
+    # Public: Convert to an array of array of integers (for output).
+    #
+    # Returns array of array of integers.
     def to_a
       array = []
-      (0..self.rows-1).each do |x|
+      (0..self.rows-1).each do |y|
         row = []
-        (0..self.cols-1).each do |y|
+        (0..self.cols-1).each do |x|
           position = Sudoku::BoardPosition.at(x, y)
           cell = self.cell_at(position)
           row << cell.value

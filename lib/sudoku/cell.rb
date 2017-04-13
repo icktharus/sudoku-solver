@@ -1,6 +1,6 @@
 module Sudoku
   class Cell
-	attr_accessor(:value, :position, :constraints)
+	attr_accessor(:value, :position, :constraints, :next_cell)
 
     # Public: Create a new Cell at this position.
     #
