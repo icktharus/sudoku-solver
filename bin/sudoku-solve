@@ -1,8 +1,22 @@
 #!/usr/bin/env ruby
 
 require( File.dirname(__FILE__) + '/../boot.rb' )
+require "optparse"
 
 def main
+  optparser = OptionParser.new do |opts|
+    opts.banner =
+      [ "Brute-force sudoku solver.",
+        "",
+        "USAGE: bundle exec ./bin/sudoku-solve <input-file> <output-file>",
+        "",
+        "  input-file: csv sudoku input file (\"-\" for STDIN, default: \"-\")",
+        "  output-file: csv sudoku output file (\"-\" for STDOUT, default: \"-\")",
+        "", "" ].join("\n")
+
+  end
+  optparser.parse!
+
   input_file  = ARGV.size > 0 ? ARGV[0] : "-"
   output_file = ARGV.size > 1 ? ARGV[1] : "-"
 
@@ -15,6 +29,9 @@ def main
 
   writer = Sudoku::BoardWriter.new(board)
   writer.write(output_file)
+
+rescue Sudoku::BoardError => e
+  puts "Error trying to solve sudoku board: #{e.message}."
 end
 
 main()
