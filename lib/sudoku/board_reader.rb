@@ -44,7 +44,7 @@ module Sudoku
           cols = elements.size
         else
           if elements.size != cols
-            raise Sudoku::BoardError, "incorrect board format: mismatched row sizes."
+            raise Sudoku::BoardError, "incorrect board format: mismatched row sizes"
           end
         end
 

@@ -23,6 +23,13 @@ module Sudoku
         return row_constraints
       end
 
+      # Public: Validates uniqueness of row.
+      def validate
+        super
+      rescue Sudoku::Constraint::ConstraintError => e
+        raise ConstraintError, e.message + " in a row"
+      end
+
     end
   end
 end

@@ -23,6 +23,12 @@ module Sudoku
         return col_constraints
       end
 
+      # Public: Validates uniqueness of column.
+      def validate
+        super
+      rescue Sudoku::Constraint::ConstraintError => e
+        raise ConstraintError, e.message + " in a column"
+      end
     end
   end
 end

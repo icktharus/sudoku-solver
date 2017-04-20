@@ -9,7 +9,7 @@ module Sudoku
     def solve
       result = solve_for_cell(@board.first_cell)
       if ! result
-        raise Sudoku::BoardError, "unable to solve board"
+        raise Sudoku::BoardError, "input board has no solution"
       end
     end
 

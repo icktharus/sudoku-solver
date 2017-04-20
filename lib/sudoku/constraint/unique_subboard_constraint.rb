@@ -27,6 +27,14 @@ module Sudoku
         return sub_board_position
       end
 
+
+      # Public: Validates uniqueness of subboard.
+      def validate
+        super
+      rescue Sudoku::Constraint::ConstraintError => e
+        raise ConstraintError, e.message + " in a 3x3 subboard"
+      end
+
     end
   end
 end
