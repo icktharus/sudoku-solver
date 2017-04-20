@@ -21,14 +21,14 @@ describe(Sudoku::Board) do
     end
 
     it("should create new board from matrix") do
-      board_matrix = [ [ nil, 1, 2 ],
-                       [ 3, 4, 5 ],
-                       [ 6, 7, 8  ] ]
+      board_matrix = [ [ 9, 8, 6 ],
+                       [ 5, 4, 3 ],
+                       [ 2, 1, nil ] ]
 
       board = Sudoku::Board.new(3, 3, board_matrix)
 
-      first_position  = Sudoku::BoardPosition.at(0,0)
-      second_position = Sudoku::BoardPosition.at(1,0)
+      first_position  = Sudoku::BoardPosition.at(2,2)
+      second_position = Sudoku::BoardPosition.at(1,2)
 
       expect(board.cell_at(first_position).value).to be(nil)
       expect(board.cell_at(first_position).class).to be(Sudoku::Cell)
@@ -39,11 +39,12 @@ describe(Sudoku::Board) do
 
   context(:cell_at) do
     it("should get correct cell") do
-      board_matrix = [ [ nil, 1, nil ],
-                       [ nil, nil, 5 ],
-                       [ nil, nil, 8  ] ]
+      board_matrix = [ [ nil, 1,   nil ],
+                       [ 7,   4,   5 ],
+                       [ nil, nil, nil  ] ]
 
       board = Sudoku::Board.new(3, 3, board_matrix)
+      expect(board.rotations).to eq(0)
       position = Sudoku::BoardPosition.at(2, 1)
       expect(board.cell_at(position).value).to eq(5)
     end
@@ -57,15 +58,18 @@ describe(Sudoku::Board) do
 
       board = Sudoku::Board.new(3, 3, board_matrix)
 
+      expect(board.rotations).to eq(2)
+      expect(board.raw_array).to eq([ [8, 7, 6], [5, 4, 3], [2, 1, nil] ])
+
       index = 0
       board.each_cell do |cell|
         case index
-        when 0
+        when 8
           expect(cell.class).to eq(Sudoku::Cell)
           expect(cell.value).to be(nil)
         else
           expect(cell.class).to eq(Sudoku::FixedCell)
-          expect(cell.value).to eq(index)
+          expect(cell.value).to eq(8 - index)
         end
 
         index += 1
@@ -118,9 +122,6 @@ describe(Sudoku::Board) do
                        [ 6, 7, 8  ] ]
       board = Sudoku::Board.new(3, 3, board_matrix)
       expect(board.to_a).to eq(board_matrix)
-
-      board.first_cell.value = 9
-      expect(board.to_a).to eq([ [9, 1, 2], [3, 4, 5], [6, 7, 8] ])
     end
   end
 end
