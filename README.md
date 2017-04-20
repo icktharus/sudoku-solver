@@ -39,6 +39,7 @@ iteration of all possible numbers in the free cells.  The possible
 numbers for a cell are dictated by the constraints for that cell: for
 example, if a board looks like:
 
+```
    - 1 2 - - - 8 - -
    - - 3 - - - - - 9
    - - - - - - - - -
@@ -48,11 +49,14 @@ example, if a board looks like:
    - - - - - - - - -
    5 - - - - - - - -
    - - - - - - - - -
+```
 
 The allowable numbers for the first cell are:
+```
   unique-row-constraint:            3, 4, 5, 6, 7,    9
   unique-column-constraint:   1, 2, 3, 4,    6, 7, 8, 9
   unique-subboard-constraint:          4, 5, 6, 7, 8, 9
+```
 
 So the actual allowable numbers for the first cell are: 4, 6, 7, and
 9.
